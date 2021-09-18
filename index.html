@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Pokedex</title>
+		<link rel="stylesheet" href="styles.css" />
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<img
+				src="./resources/images/pokedex.jpg"
+				alt="Pokedex"
+				style="width: 115%"
+			/>
+			<div id="pokemon-image" class="image-container"></div>
+			<div class="prev-image" onclick="prevImage()"></div>
+			<div class="next-image" onclick="nextImage()"></div>
+			<div id="pokemon-name" class="pokemon-name"></div>
+			<div id="info" class="info">
+				<div id="stats" class="stats"></div>
+				<!-- <div id="abilities" class="abilities"></div> -->
+			</div>
+			<div class="switchinfo-1" onclick="switchInfo()"></div>
+			<div class="switchinfo-2" onclick="switchInfo()"></div>
+			<div id="type-1" class="type-1"></div>
+			<div id="type-2" class="type-2"></div>
+			<button class="prev-pokemon" onclick="prevPokemon()"></button>
+			<button class="next-pokemon" onclick="nextPokemon()"></button>
+		</div>
+		<script>
+			let url = `https://pokemon-json-demo-api.herokuapp.com/pokemon?_page=1&_limit=1`;
+			let pokemonNumber = 1;
+			let pokemon = "";
+			let pokemonImages = [];
+			let imageIndex = 0;
+			function makeGetRequest(path) {
+				axios.get(path).then(
+					(response) => {
+						pokemon = response.data[0];
+						console.log(pokemon);
+						pokemonImages = [];
+						imageIndex = 0;
+						pokemonImages.push(
+							pokemon.pokemon_data.sprites.front_default
+						);
+						pokemonImages.push(
+							pokemon.pokemon_data.sprites.front_shiny
+						);
+						pokemonImages.push(
+							pokemon.pokemon_data.sprites.back_default
+						);
+						pokemonImages.push(
+							pokemon.pokemon_data.sprites.back_shiny
+						);
+						document.getElementById(
+							"pokemon-image"
+						).innerHTML = `<img src=${pokemonImages[imageIndex]} width=260 height=185/>`;
+						// initialize stats
+						document.getElementById("info").innerHTML =
+							renderInitialStats();
+						document.getElementById("pokemon-name").innerHTML =
+							pokemon.name[0].toUpperCase() +
+							pokemon.name.substring(1);
+						document.getElementById("type-1").innerHTML =
+							pokemon.pokemon_data.types[0].type.name[0].toUpperCase() +
+							pokemon.pokemon_data.types[0].type.name.substring(
+								1
+							);
+						if (pokemon.pokemon_data.types.length > 1) {
+							document.getElementById("type-2").innerHTML =
+								pokemon.pokemon_data.types[1].type.name[0].toUpperCase() +
+								pokemon.pokemon_data.types[1].type.name.substring(
+									1
+								);
+						} else {
+							document.getElementById("type-2").innerHTML = "";
+						}
+					},
+					(error) => {
+						console.log(error);
+					}
+				);
+			}
+			makeGetRequest(url);
+
+			function renderStats(pokemon) {
+				let string = "";
+				pokemon.pokemon_data.stats.forEach((statistic) => {
+					string += `<div class="stats-item">${statistic.stat.name} : ${statistic.base_stat}</div>`;
+				});
+				return string;
+			}
+
+			let renderAbilities = (pokemon) => {
+				let string = "";
+				pokemon.pokemon_data.abilities.forEach((ability) => {
+					string += `<div class="abilities-item">${ability.ability.name}</div>`;
+				});
+				return string;
+			};
+
+			let prevPokemon = () => {
+				if (pokemonNumber > 1) {
+					--pokemonNumber;
+					url = `https://pokemon-json-demo-api.herokuapp.com/pokemon?_page=${pokemonNumber}&_limit=1`;
+					makeGetRequest(url);
+				}
+			};
+
+			let nextPokemon = () => {
+				++pokemonNumber;
+				url = `https://pokemon-json-demo-api.herokuapp.com/pokemon?_page=${pokemonNumber}&_limit=1`;
+				makeGetRequest(url);
+			};
+
+			let prevImage = () => {
+				if (imageIndex > 0) {
+					document.getElementById(
+						"pokemon-image"
+					).innerHTML = `<img src=${
+						pokemonImages[--imageIndex]
+					} width=260 height=185/>`;
+				} else if (imageIndex == 0) {
+					imageIndex = pokemonImages.length - 1;
+					document.getElementById(
+						"pokemon-image"
+					).innerHTML = `<img src=${pokemonImages[imageIndex]} width=260 height=185/>`;
+				}
+			};
+
+			let nextImage = () => {
+				if (imageIndex < pokemonImages.length - 1) {
+					document.getElementById(
+						"pokemon-image"
+					).innerHTML = `<img src=${
+						pokemonImages[++imageIndex]
+					} width=260 height=185/>`;
+				} else if (imageIndex === pokemonImages.length - 1) {
+					imageIndex = 0;
+					document.getElementById(
+						"pokemon-image"
+					).innerHTML = `<img src=${pokemonImages[imageIndex]} width=260 height=185/>`;
+				}
+			};
+
+			let switchInfo = () => {
+				if (!!!document.getElementById("abilities")) {
+					document.getElementById(
+						"info"
+					).innerHTML = `<div id="abilities" class="abilities">${renderAbilities(
+						pokemon
+					)}</div>`;
+				} else if (!!!document.getElementById("stats")) {
+					document.getElementById(
+						"info"
+					).innerHTML = `<div id="stats" class="stats">${renderStats(
+						pokemon
+					)}</div>`;
+				}
+			};
+
+			let renderInitialStats = () => {
+				return `<div id="stats" class="stats">${renderStats(
+					pokemon
+				)}</div>`;
+			};
+		</script>
+	</body>
+</html>

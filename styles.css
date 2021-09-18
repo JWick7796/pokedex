@@ -1,0 +1,185 @@
+@font-face {
+	font-family: "digit";
+	src: url(./resources/fonts/digital.ttf);
+}
+
+@font-face {
+	font-family: "computerFont";
+	src: url(./resources/fonts/Computerfont.ttf);
+}
+
+@font-face {
+	font-family: "pokemonGB";
+	src: url(./resources/fonts/PokemonGB.ttf);
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.container {
+	position: relative;
+}
+
+.image-container {
+	position: absolute;
+	width: 300px;
+	height: 195px;
+	top: 183px;
+	left: 64px;
+	border-radius: 10px;
+	margin: 10px;
+	display: flex;
+	justify-content: center;
+}
+
+.info {
+	font-family: "digit";
+	font-size: 1.6em;
+	color: green;
+	position: absolute;
+	top: 205px;
+	left: 560px;
+	width: 288px;
+	height: 126px;
+	display: flex;
+}
+
+.stats,
+.abilities {
+	width: 100%;
+}
+
+.stats {
+	font-size: 0.8em;
+	margin: 10px 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-end;
+	margin-left: -110px;
+}
+
+.abilities {
+	margin-left: 7px;
+	margin-top: 10px;
+	font-size: 1.3em;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.pokemon-name {
+	position: absolute;
+	bottom: 53px;
+	left: 110px;
+	width: 145px;
+	height: 67px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 0.8em;
+	background-color: black;
+	border-radius: 10px;
+	font-weight: bold;
+	font-family: "pokemonGB";
+	color: #39ff14;
+}
+
+.type-1,
+.type-2 {
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-family: "pokemonGB";
+	font-size: 0.7em;
+}
+
+.type-1 {
+	bottom: 56px;
+	right: 111px;
+	width: 127px;
+	height: 55px;
+}
+
+.type-2 {
+	bottom: 56px;
+	right: -43px;
+	width: 127px;
+	height: 55px;
+}
+
+.prev-pokemon,
+.next-pokemon {
+	position: absolute;
+	cursor: pointer;
+	background-color: #00000000;
+	border-style: hidden;
+}
+
+.prev-pokemon {
+	bottom: 104px;
+	left: 290px;
+	width: 45px;
+	height: 45px;
+}
+
+.next-pokemon {
+	bottom: 104px;
+	left: 364px;
+	width: 45px;
+	height: 45px;
+}
+
+.stats-item,
+.abilities-item {
+	margin: 1px 0;
+}
+
+.next-image,
+.prev-image {
+	position: absolute;
+	width: 71px;
+	height: 20px;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+.next-image {
+	top: 487px;
+	left: 205px;
+}
+
+.prev-image {
+	top: 487px;
+	left: 117px;
+}
+
+.switchinfo-1,
+.switchinfo-2 {
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+}
+
+.switchinfo-1 {
+	bottom: 145px;
+	right: 177px;
+}
+
+.switchinfo-2 {
+	bottom: 145px;
+	right: 128px;
+}
